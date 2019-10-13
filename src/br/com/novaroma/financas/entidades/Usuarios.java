@@ -5,17 +5,22 @@
  */
 package br.com.novaroma.financas.entidades;
 import br.com.novaroma.financas.entidades.Contas;
+import br.com.novaroma.financas.negocio.UsuarioNegocio;
+import java.io.IOException;
 import java.io.Serializable;
 /**
  *
  * @author aluno
  */
 public class Usuarios implements Serializable{
+    
+    private String nome;
     private String email;
     private Contas[] conta;
     private String senha;
-    private String nome;
     private String cpf;
+    
+    private UsuarioNegocio userNegocio = new UsuarioNegocio();
     
     public Usuarios(){}
     
@@ -31,9 +36,10 @@ public class Usuarios implements Serializable{
     public String getNome(){ return this.nome; }
     public String getCpf(){ return this.cpf; }
     public String getEmail(){ return this.email; }
-    public void setContas(Contas conta){ this.conta[this.conta.length-1] = conta; this.conta = this.geradorContas(this.conta); }
     public String getSenha(){ return this.senha; }
+    public Contas[] getContas(){ return this.conta; }
     
+    public void setContas(Contas conta){ this.conta[this.conta.length-1] = conta; }
     public void setNome(String nome){ this.nome = nome; }
     public void setCpf(String cpf){ this.cpf = cpf; }
     public void setEmail(String email){ this.email = email; }
@@ -42,7 +48,20 @@ public class Usuarios implements Serializable{
     private Contas[] geradorContas(Contas[] conta){
         Contas[] contaNova = new Contas[conta.length+1];
         System.arraycopy(conta, 0, contaNova, 0, conta.length);
+        contaNova = conta;
         return contaNova;
+    }
+    
+    public boolean checkingContas(String value, Usuarios user) throws IOException, ClassNotFoundException{
+        Contas[] contasNovo = userNegocio.geralContaUsuario();
+        boolean status = false;
+        for(Contas _conta : contasNovo) {
+            if(_conta.getTituloUser().equals(value)){
+                user.setContas(_conta);
+                status = true;
+            }
+        }
+        return status;
     }
     
 }

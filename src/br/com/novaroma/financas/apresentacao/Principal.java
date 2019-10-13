@@ -16,27 +16,18 @@ public class Principal {
     public static UsuarioNegocio userNegocio = new UsuarioNegocio();
     
     public static void main(String[] args) throws ClassNotFoundException, IOException{
-        //String nome = JOptionPane.showInputDialog("Digite seu nome:");
-        //String cpf = JOptionPane.showInputDialog("Digite seu CPF:");
-        //String email = JOptionPane.showInputDialog("Digite seu email:");
-        //String senha = JOptionPane.showInputDialog("Digite sua senha:");
-        //Usuarios user = new Usuarios(nome, cpf, email, senha);
+       String nome = JOptionPane.showInputDialog("Digite seu nome:");
+        String cpf = JOptionPane.showInputDialog("Digite seu CPF:");
+        String email = JOptionPane.showInputDialog("Digite seu email:");
+        String senha = JOptionPane.showInputDialog("Digite sua senha:");
+        Usuarios user = new Usuarios(nome, cpf, email, senha);
         
-        //JOptionPane.showMessageDialog(null, userNegocio.cadastrarUsuarios(user));
-        userNegocio.GeralUsuarios();
-        String busca = JOptionPane.showInputDialog("Digite um cpf para buscar usuario: ");
-        Usuarios  user = userNegocio.buscarUsuario(busca);
+        JOptionPane.showMessageDialog(null, userNegocio.cadastrarUsuarios(user));
         
-        //userNegocio.cadastrarCategoriaUsuario(user, telaCategoria());
+        String buscar = JOptionPane.showInputDialog("Digite um usuario que deseja apagar");
+        user = userNegocio.buscarUsuario(buscar);
         
-        if(userNegocio.buscarUsuario(busca) != null){
-            user = userNegocio.buscarUsuario(busca);
-            JOptionPane.showMessageDialog(null, "Tabela de Usuarios:"
-                    + "Nome: "+user.getNome()+"\n"
-                    + "Email: "+user.getEmail()+"\n"
-                    + "CPF: "+user.getCpf()+"\n");
-        }else{
-            JOptionPane.showMessageDialog(null, "Seu Usuario Não foi encontrado");
-        }
+        JOptionPane.showMessageDialog(null, userNegocio.deletarUsuario(user));
+        
     }
 }

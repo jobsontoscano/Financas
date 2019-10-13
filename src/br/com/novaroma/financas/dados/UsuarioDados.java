@@ -200,8 +200,9 @@ public class UsuarioDados implements Registro{
             
             if(_email != null){
             for (Usuarios user : colecaoUsuarios) {
-                    if(user.getEmail().equals(_email))
+                    if(user.getEmail().equals(_email)){
                         statusConsut = true;
+                    }
             }
             }else{
                 statusConsut = false;

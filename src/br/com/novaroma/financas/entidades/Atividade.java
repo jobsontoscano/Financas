@@ -16,14 +16,16 @@ public class Atividade implements Serializable{
     private float custoTotal;
     private int parcelas;
     private Categoria categoria;
+    private int prioridade;
     
     Atividade(){}
     
-    Atividade(String nomeAtividade, float custoTotal, int parcelas, Categoria categoria){
+    Atividade(String nomeAtividade, float custoTotal, int parcelas, Categoria categoria, int prioridade){
         this.nomeAtividade = nomeAtividade;
         this.custoTotal = custoTotal;
         this.parcelas = parcelas;
         this.categoria = categoria;
+        this.prioridade = prioridade;
     }
     
     public void setNomeAtividade(String nomeAtividade){ this.nomeAtividade = nomeAtividade; }
@@ -35,5 +37,6 @@ public class Atividade implements Serializable{
     public float getCustoTotal(){ return this.custoTotal; }
     public int getParcelas(){ return this.parcelas; }
     public Categoria getCategoria(){ return this.categoria; }
+    public int getPrioridade() { return this.prioridade; }
     
 }

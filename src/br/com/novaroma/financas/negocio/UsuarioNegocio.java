@@ -7,6 +7,8 @@ package br.com.novaroma.financas.negocio;
 import br.com.novaroma.financas.entidades.Usuarios;
 import br.com.novaroma.financas.entidades.Contas;
 import br.com.novaroma.financas.entidades.Categoria;
+import br.com.novaroma.financas.entidades.Atividade;
+import br.com.novaroma.financas.negocio.AtividadeNegocio;
 import br.com.novaroma.financas.negocio.ContasNegocio;
 import br.com.novaroma.financas.dados.UsuarioDados;
 import br.com.novaroma.financas.negocio.CategoriaNegocio;
@@ -22,6 +24,7 @@ public class UsuarioNegocio {
     private Utilidades utilidades = new Utilidades();
     private ContasNegocio contaNegocio = new ContasNegocio();
     private CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
+    private AtividadeNegocio atividadeNegocio = new AtividadeNegocio();
     
     public String cadastrarUsuarios(Usuarios usuario) throws ClassNotFoundException, IOException {
         if(utilidades.validacaoCPF(usuario.getCpf()) != null){
@@ -43,30 +46,34 @@ public class UsuarioNegocio {
     
     public Usuarios buscarUsuario(String cpf) throws ClassNotFoundException, IOException{
         
-        if (this.usuarioDados.Consultar(cpf) != null){
-            return this.usuarioDados.Consultar(cpf);
+        if(utilidades.validacaoCPF(cpf) != null){
+            if (this.usuarioDados.Consultar(cpf) != null){
+                return this.usuarioDados.Consultar(cpf);
+            } else {
+                return null;
+            }
         } else {
             return null;
         }
     }
     
-    public void editarUsuario(Usuarios user) throws ClassNotFoundException, IOException{
+    public String editarUsuario(Usuarios user) throws ClassNotFoundException, IOException{
         
         if (this.usuarioDados.Editar(user,user.getCpf())){
-            JOptionPane.showMessageDialog(null, "Atualização realizada com sucesso");
+            return "Atualização realizada com sucesso";
         } else {
-            JOptionPane.showMessageDialog(null,"Ocorreu um problema na atualização \n"
-                    + "Tente novamente mais tarde");
+            return "Ocorreu um problema na atualização \n"
+                    + "Tente novamente mais tarde";
         }
     }
     
-    public void deletarUsuario(Usuarios user) throws ClassNotFoundException, IOException{
+    public String deletarUsuario(Usuarios user) throws ClassNotFoundException, IOException{
         
         if (this.usuarioDados.Deletar(user.getCpf())){
-            JOptionPane.showMessageDialog(null, "Usuario Excluido com Sucesso");
+            return "Usuario Excluido com Sucesso";
         } else {
-            JOptionPane.showMessageDialog(null,"Ocorreu um problema no modelo de Exclir \n"
-                    + "Tente novamente mais tarde");
+            return "Ocorreu um problema no modelo de Exclir \n"
+                    + "Tente novamente mais tarde";
         }
     }
     
@@ -86,10 +93,15 @@ public class UsuarioNegocio {
     public String cadastrarContaUsuario(Usuarios user, Contas conta) throws IOException, ClassNotFoundException{
         if(contaNegocio.buscarConta(conta.getTituloUser()) == null){
             contaNegocio.cadastrarConta(conta);
+            user.setContas(conta);
             return "Conta Cadastrada com sucesso";
         }else{
             return "Conta já existente";
         }
+    }
+    
+    public Contas[] geralContaUsuario() throws IOException, ClassNotFoundException{
+        return contaNegocio.geralConta();
     }
     
     public String cadastrarCategoriaUsuario(Usuarios user, Categoria categ) throws ClassNotFoundException, IOException{
@@ -101,8 +113,39 @@ public class UsuarioNegocio {
         }
     }
     
-    public String verificarRiscoConta(){
-        return null;
+    public String verificarRiscoConta(Usuarios user, String tituloConta) throws ClassNotFoundException, IOException{
+        float custoTotalMes = 0;
+        String situacao = "DESCONHECIDO";
+        
+        if(contaNegocio.buscarConta(tituloConta) != null){
+            // Criar metodo para checar se a conta chamada está gravada em arquivo 
+            // e se está indicada no perfil do usuario
+            Contas contas = contaNegocio.buscarConta(tituloConta);
+            for (Atividade atividade : contas.getAtividade()) {
+                // Criar um metodo para gerar total de custo das atividades que essa conta
+                if(atividadeNegocio.buscarAtividade(atividade.getNomeAtividade()) != null){
+                    if(atividade.getParcelas() > 0){
+                        custoTotalMes += (atividade.getCustoTotal() / atividade.getParcelas());
+                    }else{
+                        custoTotalMes += atividade.getCustoTotal();
+                    }
+                }else{
+                    System.out.println("Teste debug");
+                }
+            }
+            float resultado = (float)contas.getDinheiroLiquido() - custoTotalMes;
+            if(resultado <= (contas.getDinheiroLiquido() * 20)/100){
+                situacao = "ALTO";
+            }else if(resultado <= (contas.getDinheiroLiquido() * 50)/100){
+                situacao = "MEDIANO";
+            }else if(resultado <= (contas.getDinheiroLiquido() * 80)/100){
+                situacao = "BAIXO";
+            }
+            contas.setRiscoFinancas(situacao);
+            return situacao;
+        }else{
+            return null;
+        }
         // Metodo em desenvolvimento por favor falar com jobson antes;
     }
     

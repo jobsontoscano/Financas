@@ -17,10 +17,10 @@ public class Utilidades {
     public static String validacaoCPF(String _cpf){
         int tentativas = 0;
         boolean statusFunc = true;
-        if (!(_cpf.length() <= 11)){
-            while(statusFunc || tentativas < 3){
+        if (_cpf.length() < 11){
+            while(statusFunc){
                 _cpf = JOptionPane.showInputDialog("CPF inexistente, por favor digite novamente");
-                if(!(_cpf.length() <= 11)){ statusFunc = false; }
+                if(_cpf.length() < 11 || tentativas >= 3){ statusFunc = false; }
                 tentativas++;
             }
             if(tentativas >= 3){
@@ -28,7 +28,7 @@ public class Utilidades {
             }
             return _cpf;
         }else{
-            return null;
+            return _cpf;
         }
     }
     
@@ -39,24 +39,15 @@ public class Utilidades {
         if(_email.indexOf("@") < 0 && _email.indexOf(".") < 0){
             while(statusFunc){
                 _email = JOptionPane.showInputDialog("Email incompleto, por favor digite novamente");
-                if(_email.indexOf("@") >= 0){ statusFunc = false; }
-            }
-            if(tentativas >= 3){
-                return null;
-            }
-            return _email;
-        }else if(!(user.consultaEmail(_email))){
-            tentativas = 0;
-            while(statusFunc){
-                _email = JOptionPane.showInputDialog("Email Existente, por favor digite outro email");
-                if(user.consultaEmail(_email)){ statusFunc = false; }
+                if(_email.indexOf("@") >= 0 || tentativas >= 3){ statusFunc = false; }
+                tentativas++;
             }
             if(tentativas >= 3){
                 return null;
             }
             return _email;
         }else{
-            return null;
+            return _email;
         }
     }
 }
