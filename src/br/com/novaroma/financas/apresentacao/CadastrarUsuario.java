@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package br.com.novaroma.financas.apresentacao;
-import static br.com.novaroma.financas.apresentacao.Principal.userNegocio;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
@@ -25,8 +24,6 @@ import javax.swing.BorderFactory;
  * @author toscano
  */
 public class CadastrarUsuario extends JFrame implements ActionListener{
-    
-    private UsuarioNegocio userNegocio = new UsuarioNegocio();
     
     private JButton buttonSalvarDados = new JButton("Finalizar Cadastro");
     
@@ -82,6 +79,7 @@ public class CadastrarUsuario extends JFrame implements ActionListener{
     }
     
     public void actionPerformed(ActionEvent ae) {
+        UsuarioNegocio userNegocio = new UsuarioNegocio();
         if(ae.getSource() == buttonSalvarDados){
             Usuarios user = new Usuarios(nomeTextField.getText(),cpfTextField.getText(),
                     emailTextField.getText(),senhaTextField.getText());

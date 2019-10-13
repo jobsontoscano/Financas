@@ -96,12 +96,12 @@ public class Perfil extends JFrame implements ActionListener{
         gridPerfil.add(new JLabel(user.getCpf()));
         
         middlePanel.add(gridPerfil);
-        if(user.checkingContas(user.getContas()[0].getTituloUser(), user)){
-            System.out.println("jobson");
-            addTabela(user.getContas());
-            tabelaContas = new JTable(dados,coluna);
-            telaMain.add(tabelaContas);
-        }
+//        if(user.checkingContas(user.getContas()[0].getTituloUser(), user)){
+//            System.out.println("jobson");
+//            addTabela(user.getContas());
+//            tabelaContas = new JTable(dados,coluna);
+//            telaMain.add(tabelaContas);
+//        }
         telaMain.add(middlePanel, BorderLayout.WEST);
         
     }

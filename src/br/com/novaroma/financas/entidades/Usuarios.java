@@ -20,8 +20,6 @@ public class Usuarios implements Serializable{
     private String senha;
     private String cpf;
     
-    private UsuarioNegocio userNegocio = new UsuarioNegocio();
-    
     public Usuarios(){}
     
     public Usuarios(String nome, String cpf, String email, String senha){
@@ -33,17 +31,39 @@ public class Usuarios implements Serializable{
     }
     
     
-    public String getNome(){ return this.nome; }
-    public String getCpf(){ return this.cpf; }
-    public String getEmail(){ return this.email; }
-    public String getSenha(){ return this.senha; }
-    public Contas[] getContas(){ return this.conta; }
+    public String getNome(){ 
+        return this.nome; 
+    }
+    public String getCpf(){ 
+        return this.cpf; 
+    }
+    public String getEmail(){ 
+        return this.email; 
+    }
+    public String getSenha(){ 
+        return this.senha; 
+    }
+    public Contas[] getContas(){ 
+        return this.conta; 
+    }
     
-    public void setContas(Contas conta){ this.conta[this.conta.length-1] = conta; }
-    public void setNome(String nome){ this.nome = nome; }
-    public void setCpf(String cpf){ this.cpf = cpf; }
-    public void setEmail(String email){ this.email = email; }
-    public void setSenha(String senha){ this.senha = senha; }
+    public void setContas(Contas conta){ 
+        this.conta[this.conta.length-1] = conta;
+        this.conta = geradorContas(this.conta);
+    }
+    public void setNome(String nome){ 
+        this.nome = nome; 
+    }
+    public void setCpf(String cpf){
+        this.cpf = cpf; 
+    }
+    public void setEmail(String email){
+        this.email = email; 
+    }
+    
+    public void setSenha(String senha){ 
+        this.senha = senha;
+    }
     
     private Contas[] geradorContas(Contas[] conta){
         Contas[] contaNova = new Contas[conta.length+1];
@@ -52,16 +72,16 @@ public class Usuarios implements Serializable{
         return contaNova;
     }
     
-    public boolean checkingContas(String value, Usuarios user) throws IOException, ClassNotFoundException{
-        Contas[] contasNovo = userNegocio.geralContaUsuario();
-        boolean status = false;
-        for(Contas _conta : contasNovo) {
-            if(_conta.getTituloUser().equals(value)){
-                user.setContas(_conta);
-                status = true;
-            }
-        }
-        return status;
-    }
+//    public boolean checkingContas(String value, Usuarios user) throws IOException, ClassNotFoundException{
+//        Contas[] contasNovo = userNegocio.geralContaUsuario();
+//        boolean status = false;
+//        for(Contas _conta : contasNovo) {
+//            if(_conta.getTituloUser().equals(value)){
+//                user.setContas(_conta);
+//                status = true;
+//            }
+//        }
+//        return status;
+//    }
     
 }
