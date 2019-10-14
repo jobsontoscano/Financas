@@ -8,6 +8,7 @@ import br.com.novaroma.financas.entidades.Atividade;
 import br.com.novaroma.financas.dados.AtividadeDados;
 import br.com.novaroma.financas.dados.ContaDados;
 import br.com.novaroma.financas.entidades.Contas;
+import br.com.novaroma.financas.entidades.Usuarios;
 import br.com.novaroma.financas.entidades.Categoria;
 import br.com.novaroma.financas.util.Utilidades;
 import javax.swing.JOptionPane;
@@ -38,6 +39,10 @@ public class ContasNegocio {
         } else {
             return null;
         }
+    }
+    
+    public Contas[] buscarContaPorUsusario(Usuarios usuario) throws ClassNotFoundException, IOException{
+        return contaDados.buscar(usuario.getNome());
     }
     
     public String editarConta(Contas conta) throws ClassNotFoundException, IOException{

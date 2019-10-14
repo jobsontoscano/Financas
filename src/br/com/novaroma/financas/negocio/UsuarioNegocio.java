@@ -100,8 +100,9 @@ public class UsuarioNegocio {
         }
     }
     
-    public Contas[] geralContaUsuario() throws IOException, ClassNotFoundException{
-        return contaNegocio.geralConta();
+    public Contas[] buscarContasPorUsuario(Usuarios usuario) throws IOException, ClassNotFoundException{
+            
+        return contaNegocio.buscarContaPorUsusario(usuario);
     }
     
     public String cadastrarCategoriaUsuario(Usuarios user, Categoria categ) throws ClassNotFoundException, IOException{

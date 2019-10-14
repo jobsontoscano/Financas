@@ -95,19 +95,20 @@ public class Perfil extends JFrame implements ActionListener{
         gridPerfil.add(cpfLabelUsuario);
         gridPerfil.add(new JLabel(user.getCpf()));
         
+        
         middlePanel.add(gridPerfil);
-//        if(user.checkingContas(user.getContas()[0].getTituloUser(), user)){
-//            System.out.println("jobson");
-//            addTabela(user.getContas());
-//            tabelaContas = new JTable(dados,coluna);
-//            telaMain.add(tabelaContas);
-//        }
+        if(userNegocio.buscarContasPorUsuario(user) != null){
+            System.out.println("jobson");
+            addTabela(userNegocio.buscarContasPorUsuario(user));
+            tabelaContas = new JTable(dados,coluna);
+            telaMain.add(tabelaContas);
+        }
         telaMain.add(middlePanel, BorderLayout.WEST);
         
     }
     
     private void addTabela(Contas[] contas){
-        for (int i = 0; i < contas.length; i++) {
+        for (int i = 0; i < 1; i++) {
             for (int j = 0; j < 4; j++) {
                 if(j == 0){
                     dados[i][j] = contas[i].getNomedaConta();

@@ -91,6 +91,31 @@ public class ContaDados implements Registro{
             return false;
         }
     }
+    
+    public Contas[] buscar(String titular) throws IOException, ClassNotFoundException {
+        File arquivo = new File("arquivos/conta.txt");
+        Contas[] colecaoContas;
+        
+        if(arquivo.exists()){
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(arquivo));
+            
+            colecaoContas = (Contas[]) ois.readObject();
+            ois.close();
+            Contas[] colecaoNovo = new Contas[colecaoContas.length];
+            int cont = 0;
+            for(int i = 0; i < 1; i++){
+                if(colecaoContas[i].getTituloUser().equals(titular)){
+                    colecaoNovo[cont] = colecaoContas[i];
+                    cont++;
+                }
+                  System.out.println(colecaoContas[i].getTituloUser());
+            }      
+                    
+            return colecaoNovo;
+        } else {
+            return null;
+        }
+    }
 
     public Contas[] Geral() throws IOException, ClassNotFoundException {
         File arquivo = new File("arquivos/conta.txt");
