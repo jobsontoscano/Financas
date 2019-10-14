@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package br.com.novaroma.financas.apresentacao;
+import br.com.novaroma.financas.entidades.Atividade;
 import br.com.novaroma.financas.entidades.Contas;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -48,6 +49,9 @@ public class Perfil extends JFrame implements ActionListener{
     private JButton buttonSairUsuario = new JButton("Sair");
     private JButton buttonCriarConta = new JButton("Conta +");
     private JButton buttonCriarCategoria = new JButton("Categoria +");
+    private JButton buttonApagarConta = new JButton("ApagarConta");
+    private JButton buttonCriarAtividade = new JButton("Atividade +");
+    private JButton buttonChecarConta = new JButton("Risco de Conta");
     
     private JLabel nomeLabelUsuario = new JLabel("Nome:");
     private JLabel emailLabelUsuario = new JLabel("Email:");
@@ -56,14 +60,19 @@ public class Perfil extends JFrame implements ActionListener{
     Perfil(Usuarios user) throws IOException, ClassNotFoundException{
         this.user = user;
         this.setTitle("Perfil de "+user.getNome());
-        this.setSize(600,500);
+        this.setSize(800,650);
         this.setVisible(true);
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);;
         
         buttonEditarUsuario.addActionListener(this);
         buttonCriarConta.addActionListener(this);
-        
+        buttonApagarConta.addActionListener(this);
+        buttonSairUsuario.addActionListener(this);
+        buttonCriarCategoria.addActionListener(this);
+        buttonCriarAtividade.addActionListener(this);
+        buttonChecarConta.addActionListener(this);
+                
         Container telaMain = this.getContentPane();
         telaMain.setLayout(new BorderLayout(8,6));
         telaMain.setBackground(Color.YELLOW);
@@ -75,7 +84,16 @@ public class Perfil extends JFrame implements ActionListener{
         topPanel.setLayout(new FlowLayout(5));
         topPanel.add(buttonEditarUsuario);
         topPanel.add(buttonCriarConta);
+        if (userNegocio.buscarContasPorUsuario(user)[0] != null) {
+            topPanel.add(buttonApagarConta);
+            if(verificarAtividadeContaButton(userNegocio.buscarContasPorUsuario(user)) != null){
+                topPanel.add(buttonChecarConta);
+            }
+        }
         topPanel.add(buttonCriarCategoria);
+        if(userNegocio.buscarPorCategoriaUsuario() != null){
+            topPanel.add(buttonCriarAtividade);
+        }
         topPanel.add(buttonSairUsuario);
         telaMain.add(topPanel, BorderLayout.NORTH);
         
@@ -98,7 +116,6 @@ public class Perfil extends JFrame implements ActionListener{
         
         middlePanel.add(gridPerfil);
         if(userNegocio.buscarContasPorUsuario(user) != null){
-            System.out.println("jobson");
             addTabela(userNegocio.buscarContasPorUsuario(user));
             tabelaContas = new JTable(dados,coluna);
             telaMain.add(tabelaContas);
@@ -108,7 +125,7 @@ public class Perfil extends JFrame implements ActionListener{
     }
     
     private void addTabela(Contas[] contas){
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < (contas.length-1); i++) {
             for (int j = 0; j < 4; j++) {
                 if(j == 0){
                     dados[i][j] = contas[i].getNomedaConta();
@@ -118,9 +135,20 @@ public class Perfil extends JFrame implements ActionListener{
                     dados[i][j] = contas[i].getDinheiroLiquido();
                 }else if(j == 3){
                     dados[i][j] = contas[i].getRiscoFinancas();
+                    System.out.println(contas[i].getRiscoFinancas());
                 }
             }
         }
+    }
+    
+    private Contas verificarAtividadeContaButton(Contas[] conta){
+        System.out.println("Teste");
+        for (int i = 0; i < (conta.length-1); i++) {
+            if(conta[i].getAtividade()[i] != null){
+                return conta[i];
+            }
+        }
+        return null;
     }
     
     public void actionPerformed(ActionEvent ae) {
@@ -131,6 +159,56 @@ public class Perfil extends JFrame implements ActionListener{
         if(ae.getSource() == buttonCriarConta){
             this.setVisible(false);
             new CadastrarConta(user);
+        }
+        if(ae.getSource() == buttonApagarConta){
+            String value = JOptionPane.showInputDialog("Digite o nome da conta");
+            try {
+                JOptionPane.showMessageDialog(null,userNegocio.deletarContaUsuario(value));
+                this.setVisible(false);
+                new Perfil(user);
+            } catch (IOException ex) {
+                Logger.getLogger(Perfil.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Perfil.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if(ae.getSource() == buttonSairUsuario){
+            this.setVisible(false);
+            new Home();
+        }
+        if(ae.getSource() == buttonCriarCategoria){
+            this.setVisible(false);
+            new CadastrarCategoria(user);
+        }
+        if(ae.getSource() == buttonCriarAtividade){
+            String conta = JOptionPane.showInputDialog("Nome da Conta:");
+            try {
+                for (int i = 0; i < userNegocio.buscarContasPorUsuario(user).length; i++) {
+                    if(userNegocio.buscarContasPorUsuario(user)[i] != null){
+                        if(userNegocio.buscarContasPorUsuario(user)[i].getNomedaConta().equals(conta)){
+                            this.setVisible(false);
+                            new CadastrarAtividade(user,userNegocio.buscarContasPorUsuario(user)[i]);
+                        }
+                    }
+                }
+ 
+            } catch (IOException ex) {
+                Logger.getLogger(Perfil.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Perfil.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if(ae.getSource() == buttonChecarConta){
+            try {
+                String contaNome = JOptionPane.showInputDialog("Nome da Conta:");
+                JOptionPane.showMessageDialog(null, "Conta com risco:"+userNegocio.verificarRiscoConta(user,contaNome));
+                this.setVisible(false);
+                new Perfil(user);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Perfil.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Perfil.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     

@@ -134,6 +134,26 @@ public class CategoriaDados implements Registro{
         }
     }
     
+    public Categoria[] buscar()throws ClassNotFoundException, IOException{
+        File arquivo = new File("arquivos/categoria.txt");
+        Categoria[] colecaoCategoria;
+        
+        if(arquivo.exists()){
+            
+            FileInputStream fis = new FileInputStream(arquivo);
+            
+            ObjectInputStream ois = new ObjectInputStream (fis);
+            
+            colecaoCategoria = (Categoria[]) ois.readObject();
+            
+            ois.close();
+            
+            return colecaoCategoria;
+        } else{
+            return null;
+        }
+    }
+    
     public boolean Deletar(String value) throws IOException, ClassNotFoundException {
         File arquivo = new File("arquivos/categoria.txt");
         Categoria[] colecaoCategoria;

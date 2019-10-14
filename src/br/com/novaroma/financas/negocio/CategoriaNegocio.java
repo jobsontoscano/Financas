@@ -58,6 +58,10 @@ public class CategoriaNegocio {
         }
     }
     
+    public Categoria[] buscarPorCategoriaUsuario()throws ClassNotFoundException, IOException{
+        return categoriaDados.buscar();
+    }
+    
     public void geralCategoria()throws ClassNotFoundException, IOException{
         Categoria[] catagBusca = this.categoriaDados.Geral();
         
@@ -66,8 +70,7 @@ public class CategoriaNegocio {
                 JOptionPane.showMessageDialog(null, "Tabela de Categoria:"
                     + "Nome da Categoria: "+catg.getNomeCategoria()+"\n"
                     + "Prioriadade: "+catg.getstatusPrioridade()+"\n"
-                    + "Custo: "+catg.getcustoSalario()+"\n"
-                    + "Nivel:"+catg.getniveldePrioridade()+"\n");
+                    + "Custo: "+catg.getcustoSalario()+"\n");
             }
         }
     }

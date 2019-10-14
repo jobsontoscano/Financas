@@ -5,7 +5,7 @@
  */
 package br.com.novaroma.financas.negocio;
 import br.com.novaroma.financas.entidades.Atividade;
-import br.com.novaroma.financas.dados.AtividadeDados;
+import br.com.novaroma.financas.negocio.AtividadeNegocio;
 import br.com.novaroma.financas.dados.ContaDados;
 import br.com.novaroma.financas.entidades.Contas;
 import br.com.novaroma.financas.entidades.Usuarios;
@@ -20,7 +20,7 @@ import java.io.IOException;
  */
 public class ContasNegocio {
     private ContaDados contaDados = new ContaDados();
-    private AtividadeDados atvDados = new AtividadeDados();
+    private AtividadeNegocio atividadeNegocio = new AtividadeNegocio();
     
     public String cadastrarConta(Contas conta) throws ClassNotFoundException, IOException {
         if (this.contaDados.Consultar(conta.getNomedaConta()) != null) {
@@ -70,21 +70,24 @@ public class ContasNegocio {
         return contaBusca;
     }
     
-    public void cadastrarContaAtividade(Atividade atv, Contas conta)throws ClassNotFoundException, IOException{
-        if(atvDados.Consultar(atv.getNomeAtividade()) == null){
-            atvDados.Cadastrar(atv);
+    public String cadastrarContaAtividade(Atividade atv, Contas conta)throws ClassNotFoundException, IOException{
+        if(atividadeNegocio.buscarAtividade(atv.getNomeAtividade()) == null){
+            atividadeNegocio.cadastrarAtividade(atv);
             System.out.println("Atividade Cadastrada em nosso sistema");
             conta.setAtividade(atv);
+            contaDados.Editar(conta,conta.getNomedaConta());
             System.out.println("Atividade implementada na conta");
+            return "Atividade Cadastrada";
         }else{
             System.out.println("Atividade já existente");
             if(contaDados.CarregarEntidade(conta.getAtividade(), atv.getNomeAtividade()) < 0){
-                conta.setAtividade(atvDados.Consultar(atv.getNomeAtividade()));
+                conta.setAtividade(atividadeNegocio.buscarAtividade(atv.getNomeAtividade()));
+                contaDados.Editar(conta,conta.getNomedaConta());
                 System.out.println("Atividade implementada na conta");
             }else{
                 System.out.println("Atividade já implementada em sua conta");
             }
-            
+            return "Problema ao Cadastrar Atividade";
         }
     }
 

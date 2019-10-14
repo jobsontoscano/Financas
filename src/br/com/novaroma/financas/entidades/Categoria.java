@@ -14,29 +14,37 @@ import java.io.Serializable;
 public class Categoria implements Serializable {
     private String nomeCategoria;
     private boolean statusPrioridade;
-    private int niveldePrioridade;
-    private double custodoSalario;
+    private int custodoSalario;
     
     public Categoria(){}
     
-    public Categoria(String nomeCategoria, boolean statusPrioridade, int niveldePrioridade, double custodoSalario){
+    public Categoria(String nomeCategoria, boolean statusPrioridade, int custodoSalario){
         this.nomeCategoria = nomeCategoria;
         this.statusPrioridade = statusPrioridade;
-        this.niveldePrioridade = niveldePrioridade;
         this.custodoSalario = custodoSalario;
     }
     
   
     
-    public String getNomeCategoria(){ return this.nomeCategoria; }
-    public boolean getstatusPrioridade(){ return this.statusPrioridade; }
-    public int getniveldePrioridade(){ return this.niveldePrioridade; }
-    public double getcustoSalario(){ return this.custodoSalario; }
+    public String getNomeCategoria(){
+        return this.nomeCategoria; 
+    }
+    public boolean getstatusPrioridade(){
+        return this.statusPrioridade; 
+    }
+    public double getcustoSalario(){
+        return this.custodoSalario; 
+    }
     
-    public void setnomeCategoria(String nomeCategoria){ this.nomeCategoria = nomeCategoria; }
-    public void setstatusPrioridade(boolean statusPrioridade){ this.statusPrioridade = statusPrioridade;} 
-    public void setniveldePrioridade(int niveldePrioridade){this.niveldePrioridade = niveldePrioridade;} 
-    public void setcustoSalario(double custoSalario){ this.custodoSalario = custodoSalario; }
+    public void setnomeCategoria(String nomeCategoria){
+        this.nomeCategoria = nomeCategoria; 
+    }
+    public void setstatusPrioridade(boolean statusPrioridade){
+        this.statusPrioridade = statusPrioridade;
+    } 
+    public void setcustoSalario(double custoSalario){
+        this.custodoSalario = custodoSalario; 
+    }
     
     
 }

@@ -103,12 +103,11 @@ public class ContaDados implements Registro{
             ois.close();
             Contas[] colecaoNovo = new Contas[colecaoContas.length];
             int cont = 0;
-            for(int i = 0; i < 1; i++){
+            for(int i = 0; i < (colecaoContas.length-1); i++){
                 if(colecaoContas[i].getTituloUser().equals(titular)){
                     colecaoNovo[cont] = colecaoContas[i];
                     cont++;
                 }
-                  System.out.println(colecaoContas[i].getTituloUser());
             }      
                     
             return colecaoNovo;
@@ -198,7 +197,7 @@ public class ContaDados implements Registro{
         int cont = -1;
         for (int i = 0; i < objs.length; i++) {
             if(objs[i] != null){
-                if(objs[i].getTituloUser().equals(value)){
+                if(objs[i].getNomedaConta().equals(value)){
                     cont = i;
                 }
             }

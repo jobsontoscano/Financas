@@ -20,12 +20,11 @@ public class Atividade implements Serializable{
     
     Atividade(){}
     
-    Atividade(String nomeAtividade, float custoTotal, int parcelas, Categoria categoria, int prioridade){
+    public Atividade(String nomeAtividade, float custoTotal, int parcelas, Categoria categoria){
         this.nomeAtividade = nomeAtividade;
         this.custoTotal = custoTotal;
         this.parcelas = parcelas;
         this.categoria = categoria;
-        this.prioridade = prioridade;
     }
     
     public void setNomeAtividade(String nomeAtividade){ this.nomeAtividade = nomeAtividade; }
